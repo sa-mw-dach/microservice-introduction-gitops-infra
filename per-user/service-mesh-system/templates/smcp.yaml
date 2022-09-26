@@ -2,6 +2,7 @@ apiVersion: maistra.io/v2
 kind: ServiceMeshControlPlane
 metadata:
   name: basic
+  namespace: {{ .Values.namespace }}
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
