@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resolutionrequests-cleaner-playbook
+data:
+  play.yaml: |-
+    #!/usr/bin/env ansible-playbook
+    ---
+    - hosts: localhost
+      gather_facts: false
+      tasks:
+
+        - kubernetes.core.k8s_info:
+            api_version: apiextensions.k8s.io/v1
+            kind: CustomResourceDefinition
+            name: resolutionrequests.resolution.tekton.dev
+          register: crd_resolutionrequests
+
+        - set_fact:
+            index_of_all: "{ lookup('ansible.utils.index_of', crd_resolutionrequests.resources[0].spec.names.categories, 'eq', 'all') }}"
+
+        - name: Delete
+          debug:
+            msg: "/spec/names/categories/{{ index_of_all | int }}"
+          when:
+            - index_of_all is defined
+            - index_of_all | length > 0
+            - index_of_all | int > -1
+
+        - kubernetes.core.k8s_json_patch:
+            api_version: apiextensions.k8s.io/v1
+            kind: CustomResourceDefinition
+            name: resolutionrequests.resolution.tekton.dev
+            patch:
+              - op: remove
+                path: "/spec/names/categories/{{ index_of_all | int }}"
+          when:
+            - index_of_all is defined
+            - index_of_all | length > 0
+            - index_of_all | int > -1
+
+          # {{ lookup('ansible.utils.index_of', crd_resolutionrequests.resources[0].spec.names.categories, 'eq', 'all') }}
+

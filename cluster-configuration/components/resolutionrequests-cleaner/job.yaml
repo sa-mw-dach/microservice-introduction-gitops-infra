@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: resolutionrequests-cleaner
+  labels:
+    app.openshift.io/runtime: ansible
+    app: resolutionrequests-cleaner
+    app.kubernetes.io/component: resolutionrequests-cleaner
+    app.kubernetes.io/instance: resolutionrequests-cleaner
+    app.kubernetes.io/name: resolutionrequests-cleaner
+    app.kubernetes.io/part-of: resolutionrequests-cleaner
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: resolutionrequests-cleaner
+    spec:
+      serviceAccountName: resolutionrequests-cleaner
+      volumes:
+        - name: playbook
+          configMap:
+            name: resolutionrequests-cleaner-playbook
+            defaultMode: 420
+      containers:
+      - image: quay.io/redhat-emea-ssa-team/hetzner-ocp4-ansible-ee:master
+        name: resolutionrequests-cleaner
+        resources: {}
+        volumeMounts:
+          - name: playbook
+            mountPath: /playbook/
+        command:
+            - /bin/sh
+            - '-c'
+            - >
+              export K8S_AUTH_API_KEY=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token )
+              export K8S_AUTH_SSL_CA_CERT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              export K8S_AUTH_HOST=https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
+
+              entrypoint ansible-runner run /runner -p /playbook/play.yaml
+
+
+      restartPolicy: Never
+status: {}
