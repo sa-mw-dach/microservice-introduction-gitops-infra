@@ -4,6 +4,7 @@ namespace: opentour-infra-resolutionrequests-cleaner
 
 resources:
  - namespace.yaml
+ - rolebinding-argocd.yaml
  - serviceaccount.yaml
  - clusterrole.yaml
  - clusterrolebinding.yaml
