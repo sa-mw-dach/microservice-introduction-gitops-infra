@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - gitops-service-mesh-admin.yaml
-
+  - gitops-argocd-admin.yaml
 
 components:
   - ../../components/resolutionrequests-cleaner/
