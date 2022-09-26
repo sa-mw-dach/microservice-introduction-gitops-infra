@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: argocd
+spec:
+  rbac:
+    defaultPolicy: ''
+    policy: |
+      g, system:cluster-admins, role:admin
+      g, gitops-admins-{{ .Values.namespacePermissions.user }}, role:admin
+    scopes: '[groups]'
