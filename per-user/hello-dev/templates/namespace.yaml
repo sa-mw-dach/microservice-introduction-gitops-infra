@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  label:
+     argocd.argoproj.io/managed-by: {{ .Values.namespacePermissions.user }}-gitops
   creationTimestamp: null
   name: {{ .Values.namespacePermissions.user }}-hello-dev
 spec: {}
