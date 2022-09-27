@@ -3,6 +3,10 @@ kind: ArgoCD
 metadata:
   name: argocd
 spec:
+  sso:
+    dex:
+      openShiftOAuth: true
+    provider: dex
   server:
     route:
       enabled: true
