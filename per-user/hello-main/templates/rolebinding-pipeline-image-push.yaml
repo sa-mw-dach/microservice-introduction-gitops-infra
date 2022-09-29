@@ -9,5 +9,5 @@ roleRef:
   name: system:image-pusher
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.namespacePermissions.user }}
+  name: pipeline
   namespace: {{ .Values.namespacePermissions.user }}-hello-dev
