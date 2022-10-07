@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - gitops-service-mesh-admin.yaml
   - gitops-argocd-admin.yaml
+  - gitops-service-mesh-memberrolls-admin.yaml
 
 components:
   - ../../components/resolutionrequests-cleaner/
