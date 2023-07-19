@@ -5,10 +5,10 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
-  version: v2.2
+  version: v2.4
   tracing:
     type: Jaeger
-    sampling: 10000
+    sampling: 1000
   addons:
     jaeger:
       name: jaeger
@@ -20,3 +20,10 @@ spec:
       name: kiali
     grafana:
       enabled: true
+    prometheus:
+      enabled: true
+  mode: MultiTenant
+  policy:
+    type: Istiod
+  telemetry:
+    type: Istiod
