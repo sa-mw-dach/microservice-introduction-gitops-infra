@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.namespacePermissions.user }}-service-mesh-system
 spec:
   members:
-    - {{ .Values.namespacePermissions.user }}-service-mesh-app
+    - {{ .Values.namespacePermissions.user }}-app
